@@ -1,29 +1,46 @@
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import {
+  QueryClient,
+  provideQueryClient,
+} from '@tanstack/angular-query-experimental';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule],
+      providers: [provideQueryClient(() => new QueryClient())],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('should test the mutation', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
 
-  it(`should have the 'query-angular-mutation-testing' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('query-angular-mutation-testing');
-  });
+    app.runMutation();
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, query-angular-mutation-testing');
+    TestBed.flushEffects();
+    fixture.detectChanges();
+    TestBed.flushEffects();
+
+    TestBed.inject(HttpTestingController)
+      .expectOne({
+        method: 'GET',
+        url: '/get-endpoint',
+      })
+      .flush('response');
+
+    TestBed.inject(HttpTestingController)
+      .expectOne({
+        method: 'POST',
+        url: '/post-endpoint',
+      })
+      .flush('response');
   });
 });
