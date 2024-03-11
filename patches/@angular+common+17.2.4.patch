@@ -1,0 +1,29 @@
+diff --git a/node_modules/@angular/common/fesm2022/http/testing.mjs b/node_modules/@angular/common/fesm2022/http/testing.mjs
+index 5af6de5..6a22b0b 100755
+--- a/node_modules/@angular/common/fesm2022/http/testing.mjs
++++ b/node_modules/@angular/common/fesm2022/http/testing.mjs
+@@ -4,7 +4,7 @@
+  * License: MIT
+  */
+ 
+-import { HttpHeaders, HttpStatusCode, HttpResponse, HttpErrorResponse, HttpEventType, HttpBackend, HttpClientModule } from '@angular/common/http';
++import { HttpBackend, HttpClientModule, HttpErrorResponse, HttpEventType, HttpHeaders, HttpResponse, HttpStatusCode } from '@angular/common/http';
+ import * as i0 from '@angular/core';
+ import { Injectable, NgModule } from '@angular/core';
+ import { Observable } from 'rxjs';
+@@ -212,6 +212,7 @@ class HttpClientTestingBackend {
+         return new Observable((observer) => {
+             const testReq = new TestRequest(req, observer);
+             this.open.push(testReq);
++            console.log('request gets added here', req.url, req.method);
+             observer.next({ type: HttpEventType.Sent });
+             return () => {
+                 testReq._cancelled = true;
+@@ -238,6 +239,7 @@ class HttpClientTestingBackend {
+      * without asserting anything about the number of matches.
+      */
+     match(match) {
++        console.log('match happens here', match.url, match.method)
+         const results = this._match(match);
+         results.forEach((result) => {
+             const index = this.open.indexOf(result);

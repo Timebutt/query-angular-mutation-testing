@@ -21,7 +21,8 @@
     "@tanstack/angular-query-experimental": "5.26.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.3",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.2.3",
@@ -30,6 +31,7 @@
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.0.3",
+    "patch-package": "^8.0.0",
     "typescript": "~5.3.2"
   }
 }
