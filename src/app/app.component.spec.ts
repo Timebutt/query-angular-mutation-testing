@@ -2,7 +2,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import {
   QueryClient,
   provideQueryClient,
@@ -17,15 +17,20 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('should test the mutation', () => {
+  it('should test the mutation', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
 
     app.runMutation();
 
+    // Tried forcing change detection or running all asynchronous tasks to no avail
     fixture.detectChanges();
     TestBed.flushEffects();
+
+    tick(1000);
+    flush();
+
     fixture.detectChanges();
     TestBed.flushEffects();
 
@@ -42,5 +47,5 @@ describe('AppComponent', () => {
         url: '/post-endpoint',
       })
       .flush('response');
-  });
+  }));
 });
